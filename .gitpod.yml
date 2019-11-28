@@ -1,6 +1,6 @@
 ports:
  - port: 3000
-   onOpen: open_preview
+   onOpen: open-preview
 tasks:
  - before: cd redDrink
    init: npm install
