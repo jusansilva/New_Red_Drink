@@ -1,0 +1,23 @@
+{
+  "name": "new_red_drink",
+  "version": "1.0.0",
+  "description": "Nova versão do Game Red Drink",
+  "main": "redDrink/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jusansilva/New_Red_Drink.git"
+  },
+  "author": "Jusan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jusansilva/New_Red_Drink/issues"
+  },
+  "homepage": "https://github.com/jusansilva/New_Red_Drink#readme",
+  "dependencies": {
+    "socket.io": "^2.3.0",
+    "xpress": "^2.4.6"
+  }
+}
