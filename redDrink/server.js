@@ -1,11 +1,52 @@
 const express = require('express')
-const app = express()
-const server = require('http').createServer(app)
-const io = require('socket.io')(server)
+, passport = require("passport")
+, FacebookStrategy = require("passport-facebook")
+, session = require("express-session")
+, cookieParse = require("cookie-parser")
+, bodyParser = require("body-parser")
+, config = require("./config")
+, mysql = require("mysql")
+, app = express()
+, server = require("http").createServer(app)
+, io = require("socket.io");
 
+const pool = mysql.createPool({
+    host : config.host,
+    user : config.user_name,
+    password : config.password,
+    database : config.database
+})
+
+passport.serializeUser(function(user, done) {
+    done(null, user)
+})
+
+passport.deserializeUser(function(obj, done) {
+    done(null, obj)
+})
+
+passport.use( new FacebookStrategy({
+    clientId : config.Facebook_api_key,  
+    clientSecret : config.facebook_api_secret,
+    callbackURL : config.callback_url
+}),
+function(accessToken, refreshToken, profile, done){
+    process.nextTick(function(){
+        if(config.use_databse){
+            pool.query('SELECT * from user_info where user_id='+profile.id, (err, rows) => {
+                if(err) throw err;
+                if(rows && rows.length === 0){
+                    console.log("Ainda não é um usuario, adicionando agora");
+                    pool.query("INSERT into user_info(user_id, user_name) VALUE ('"+profile.id+"','"+profile.user_name+"')");
+                }
+            })
+        }
+        return done(null, profile);
+    })
+})
 
 const game = createGame()
-let maxConcurrentConnections = 10
+let maxConcurrentConnections = 6
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/game.html')
