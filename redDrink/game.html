@@ -1,138 +1,64 @@
 <html>
-    <head>
-        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-        <meta http-equiv="Pragma" content="no-cache" />
-        <meta http-equiv="Expires" content="0" />
-        <meta charset="utf-8">
-        <title>Meu Primeiro Jogo Multiplayer</title>
-        <script src="/socket.io/socket.io.js"></script>
 
-        <style>
-            body {
-                margin: 40px 0 0 0;
-                padding: 0;
-                background-color: #EEE;
-                text-align: center;
-            }
+<head>
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<meta charset="utf-8">
+	<title>Meu Primeiro Jogo Multiplayer</title>
+	<script src="/socket.io/socket.io.js"></script>
+	<!--bootstrap 4-->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
 
-            #game-canvas {
-                image-rendering: pixelated;
-                image-rendering: crisp-edges;
-                image-rendering: -moz-crisp-edges;
-                border-radius: 50%;
-                -webkit-box-shadow: 0px 4px 17px 0px rgba(0,0,0,0.19);
-                -moz-box-shadow: 0px 4px 17px 0px rgba(0,0,0,0.19);
-                box-shadow: 0px 4px 17px 0px rgba(0,0,0,0.19);
-                margin-bottom: 20px;
-                margin-left: 20px;
-                margin-right: 20px;
-                display: inline-block;
-                vertical-align: top;
-                width: 400;
-                height: 400px;
-            }
+<body>
 
-            #score-table {
-                font-size: 13px;
-                vertical-align: top;
-                display: inline-block;
-                font-family: Arial, Helvetica, sans-serif
-            }
+	<div class="" id="max-concurrent-connection-message">
+		<h1>Número máximo de conexões atingida!</h1>
+		<h2>Feche a aba e abra o jogo novamente</h2>
+		<p>Tente entrar em outra sala ou crie a sua sala!</p>
+	</div>
+	<div id="game-container">
+		<canvas id="game-canvas"></canvas>
+		<table id="score-table"></table>
+	</div>
 
-            #score-table tr.header td {
-                border-bottom: 1px solid #CCC;
-                padding-bottom: 8px;
-            }
+	</div>
 
-            #score-table tr.footer td {
-                border-top: 1px solid #CCC;
-                font-size: 11px;
-            }
-
-            #score-table td {
-                padding-top: 5px;
-                padding-bottom: 5px;
-            }
-
-            #score-table .socket-id {
-                font-weight: normal;
-                color: #222;
-                width: 150px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                display: inline-block
-            }
-
-            #score-table .score-value {
-                font-weight: bold;
-                color: #000;
-                text-align: right;
-            }
-
-            #score-table .current-player .socket-id,
-            #score-table .current-player .score-value {
-                color: #bdaa27;
-            }
-
-            #max-concurrent-connection-message {
-                background-color: #F0DB4F;
-                border: 1px solid #000;
-                text-align:center;
-                margin: auto;
-                margin: 100px;
-                padding: 50px;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                left: 0;
-                font-family: Arial, Helvetica, sans-serif;
-                display: none;
-            }
-        </style>
-    </head>
-    <body>
-
-        <div id="max-concurrent-connection-message">
-            <h1>Número máximo de conexões atingida!</h1>
-            <h2>(não feche esta página)</h2>
-            <p>Apesar do número máximo ter sido atingido, esta página ficará tentando reconectar em background automaticamente. Assim que aumentarmos o número de conexões, você não precisará fazer nada para reconectar e começar a jogar com a turma!</p>
-        </div>
-        <div id="game-container">
-            <canvas id="game-canvas"></canvas>
-            <table id="score-table"></table>
-        </div>
-
-    </div>
-
-        <script>
-            let connected = false
+	<script>
+		let connected = false
             const socket = io()
             let game
             const scoreTable = document.getElementById('score-table')
             const gameCanvas = document.getElementById('game-canvas')
             let totalPlayersCount = ''
-            const collectFruitAudio = new Audio('collect.mp3')
-            const collect100FruitAudio = new Audio('100-collect.mp3')
+            const nextPlayerAudio = new Audio('')
+            const goShot = new Audio('')
 
             socket.on('connect', () => {
                 connected = true
-                console.log('> Connected to server')
+                console.log('> Conectando ao servidor')
             })
 
             socket.on('disconnect', () => {
-                console.log('> Disconnected')
+                console.log('> Desconectado')
                 connected = false
             })
 
             socket.on('bootstrap', (gameInitialState) => {
                 game = gameInitialState
-                console.log('> Received initial state')
-                
+                console.log('> Recebendo estado inicial')
                 const ctx = gameCanvas.getContext('2d')
+
+                var backgroud = new Image()
+                
+
                 ctx.beginPath();
-                ctx.arc(100, 75, 50, 0*Math.PI, Math.PI * 2); // Círculo exterior
-                ctx.stroke();
+                    backgroud.onload = function(){
+                        ctx.drawImage(backgroud,0,0); // Or at whatever offset you like
+                    };
+                backgroud.src = 'backgroud.png'
                 requestAnimationFrame(renderGame)
 
                 function renderGame() {
@@ -193,16 +119,16 @@
                 multipleOf100Remainder = score % 100
 
                 if (multipleOf100Remainder !== 0) {
-                    collectFruitAudio.pause()
-                    collectFruitAudio.currentTime = 0
-                    collectFruitAudio.play()
+                    nextPlayerAudio.pause()
+                    nextPlayerAudio.currentTime = 0
+                    nextPlayerAudio.play()
                 }
 
                 if (multipleOf100Remainder === 0 && score !== 0) {
-                    collectFruitAudio.pause()
-                    collect100FruitAudio.pause()
-                    collect100FruitAudio.currentTime = 0
-                    collect100FruitAudio.play()
+                    nextPlayerAudio.pause()
+                    goShot.pause()
+                    goShot.currentTime = 0
+                    goShot.play()
                 }
 
                 updateScoreTable()
@@ -376,6 +302,7 @@
 
             document.addEventListener('keydown', throttledKeydown)
 
-        </script>
-    </body>
+	</script>
+</body>
+
 </html>

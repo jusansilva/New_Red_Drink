@@ -5,7 +5,9 @@ const webServer = require('http').createServer(webApp)
 const io = require('socket.io')(webServer)
 
 const game = createGame()
-let maxConcurrentConnections = 15
+let maxConcurrentConnections = 5
+let maxSala
+
 
 webApp.get('/', function(req, res){
   res.sendFile(__dirname + '/game.html')
@@ -18,6 +20,10 @@ webApp.get('/a31ecc0596d72f84e5ee403ddcacb3dea94ce0803fc9e6dc2eca1fbabae49a3e3a3
 
 webApp.get('/collect.mp3', function(req, res){
   res.sendFile(__dirname + '/collect.mp3')
+})
+
+webApp.get('/backgroud.png', function(req, res){
+  res.sendFile(__dirname + '/asset/image/fundo.png')
 })
 
 webApp.get('/100-collect.mp3', function(req, res){
@@ -120,8 +126,8 @@ function createGame() {
   let fruitGameInterval
 
   const game = {
-    canvasWidth: 35,
-    canvasHeight: 30,
+    canvasWidth: 730,
+    canvasHeight: 1334,
     players: {},
     fruits: {},
     addPlayer,

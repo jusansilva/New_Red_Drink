@@ -2,6 +2,5 @@ ports:
  - port: 3000
    onOpen: open-preview
 tasks:
- - before: cd redDrink
-   init: npm install
-   command: npm start 
+ - init: cd redDrink
+   before: npm install && npm install nodemon -g; nodemon serve.js 
