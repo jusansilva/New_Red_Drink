@@ -20,7 +20,6 @@
 		<p>Tente entrar em outra sala ou crie a sua sala!</p>
 	</div>
 	<div id="game-container">
-		<canvas id="game-canvas"></canvas>
 		<table id="score-table"></table>
 	</div>
 
@@ -31,7 +30,6 @@
             const socket = io()
             let game
             const scoreTable = document.getElementById('score-table')
-            const gameCanvas = document.getElementById('game-canvas')
             let totalPlayersCount = ''
             const nextPlayerAudio = new Audio('')
             const goShot = new Audio('')
@@ -49,48 +47,14 @@
             socket.on('bootstrap', (gameInitialState) => {
                 game = gameInitialState
                 console.log('> Recebendo estado inicial')
-                const ctx = gameCanvas.getContext('2d')
-
-                var backgroud = new Image()
-                
-
-                ctx.beginPath();
-                    backgroud.onload = function(){
-                        ctx.drawImage(backgroud,0,0); // Or at whatever offset you like
-                    };
-                backgroud.src = 'backgroud.png'
-                requestAnimationFrame(renderGame)
-
+            
                 function renderGame() {
-                    const allPixels = game.canvasWidth * game.canvasHeight
-
-                    context.globalAlpha = 1
-                    context.fillStyle = 'white'
-                    context.fillRect(0, 0, game.canvasWidth, game.canvasHeight)
-
-                    for (const socketId in game.players) {
-                        const player = game.players[socketId]
-                        context.fillStyle = '#000000'
-                        context.globalAlpha = 0.1
-                        context.fillRect(player.x, player.y, 1, 1)
-                    }
-
-                    for (const fruitId in game.fruits) {
-                        const fruit = game.fruits[fruitId]
-                        context.fillStyle = '#08a331'
-                        context.globalAlpha = 1
-                        context.fillRect(fruit.x, fruit.y, 1, 1)
-                    }
-
                     const currentPlayer = game.players[socket.id]
-                    context.fillStyle = '#F0DB4F'
-                    context.globalAlpha = 1
-                    context.fillRect(currentPlayer.x, currentPlayer.y, 1, 1)
-
-
-                    requestAnimationFrame(renderGame)
+                    if(orderGame() = game.players[socket.id].order)
+                    {
+                        game();
+                    }
                 }
-
                 updateScoreTable()
             })
 
@@ -114,23 +78,13 @@
                 }
             })
 
-            socket.on('fruit-remove', ({fruitId, score}) => {
-                delete game.fruits[fruitId]
-                multipleOf100Remainder = score % 100
+            socket.on('drink-select', ({drink}) => {
 
-                if (multipleOf100Remainder !== 0) {
+                if (drink) {
                     nextPlayerAudio.pause()
                     nextPlayerAudio.currentTime = 0
                     nextPlayerAudio.play()
                 }
-
-                if (multipleOf100Remainder === 0 && score !== 0) {
-                    nextPlayerAudio.pause()
-                    goShot.pause()
-                    goShot.currentTime = 0
-                    goShot.play()
-                }
-
                 updateScoreTable()
             })
 
@@ -269,6 +223,13 @@
                         return
                     }
                 }
+            }
+
+            function orderGame()
+            {
+                var playerGame = game.players[Math.floor(Math.random()*myArray.length)];
+
+                return playerGame;
             }
 
             // Essa lógica deveria estar no server.

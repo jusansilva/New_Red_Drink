@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/jusansilva/New_Red_Drink#readme",
   "dependencies": {
+    "mongodb": "^3.5.2",
     "socket.io": "^2.3.0",
+    "sqlite3": "^4.1.1",
     "xpress": "^2.4.6"
   }
 }
