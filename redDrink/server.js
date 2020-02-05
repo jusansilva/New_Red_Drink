@@ -4,71 +4,46 @@ const webApp = express()
 const webServer = require('http').createServer(webApp)
 const io = require('socket.io')(webServer)
 var sqlite3 = require('sqlite3').verbose();
-var db;
-
-function createDb() {
-    console.log("createDb chain");
-    db = new sqlite3.Database('db.sqlite3', sqlite3.OPEN_READWRITE, createTable);
-}
-
-
-function createTable() {
-    console.log("createTables");
-    db.run(`CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, email TEXT NOT NULL, maxScore INTEGER NOT NULL, currentScore INTEGER NOT NULL);
-    CREATE TABLE IF NOT EXISTS room (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL;
-        CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER NOT NULL, id_room INTEGER NOT NULL)`, insertRows);
-}
-
-function insertRows() {
-    console.log("insertRows user");
-    var user = db.run(`INSERT INTO user VALUES("jusan", "jusanmagno@gmail.com", 1, 10)`, (err, rowns) => {
-        if (err) {
-            console.log(err)
-        }
-        console.log(rowns)
-    });
-    //user.finalize();
-    readAllRows()
-}
-
-function readAllRows() {
-    console.log("readAllRows user");
-    db.all("SELECT * FROM user", [], (err, rows) => {
-        if (err) {
-            console.log(err)
-        }
-        rows.forEach((row) => {
-            console.log(row);
-        });
-    
-        closeDb();
-    });
-}
-
-function closeDb() {
-    console.log("closeDb...");
-    db.close();
-}
-
-function runChainExample() {
-    createDb();
-}
-runChainExample();
+var db = new sqlite3.Database('reddrinkdb.sqlitle3');
+webApp.use(express.urlencoded())
 
 const game = createGame()
 let maxConcurrentConnections = 5
 let maxSala
 
 
-webApp.get('/', function (req, res) {
+
+webApp.get('/', (req, res) => {
     res.sendFile(__dirname + '/home.html')
 })
 
-webApp.get('/sala', function (req, res) {
+webApp.get('/sala', (req, res) => {
     res.sendFile(__dirname + '/addSala.html')
 })
 
-webApp.get('/game', function (req, res) {
+webApp.post('/sala', (req, res) => {
+    const sala = req.body.sala
+    const username = req.body.username
+    const email = req.body.email
+console.log(req.body)
+    // var verifyUser
+
+    // db.get(`select username, email from user where email=${email}`, [], (erro, data) => {
+    //     if (!erro) {
+    //         verifyUser = data
+    //     }
+    // })
+
+    // if (verifyUser > 0) {
+    //     res.send("usuariao ja cadastrado");
+    // } else {
+        db.run(`insert into user valuer(${email}, ${username}, 0, 0)`)
+        res.sendFile(__dirname + `/game.html`, {username:username})
+    // }
+
+})
+
+webApp.get('/game', (req, res) => {
     res.sendFile(__dirname + '/game.html')
 })
 // Coisas que só uma POC vai conhecer
@@ -76,19 +51,19 @@ webApp.get('/a31ecc0596d72f84e5ee403ddcacb3dea94ce0803fc9e6dc2eca1fbabae49a3e3a3
     res.sendFile(__dirname + '/game-admin.html')
 })
 
-webApp.get('/collect.mp3', function (req, res) {
+webApp.get('/collect.mp3', (req, res) => {
     res.sendFile(__dirname + '/collect.mp3')
 })
 
-webApp.get('/backgroud.png', function (req, res) {
+webApp.get('/backgroud.png', (req, res) => {
     res.sendFile(__dirname + '/asset/image/fundo.png')
 })
 
-webApp.get('/reddrink', function (req, res) {
+webApp.get('/reddrink', (req, res) => {
     res.sendFile(__dirname + '/asset/image/red drink.gif')
 })
 
-webApp.get('/100-collect.mp3', function (req, res) {
+webApp.get('/100-collect.mp3', (req, res) => {
     res.sendFile(__dirname + '/100-collect.mp3')
 })
 

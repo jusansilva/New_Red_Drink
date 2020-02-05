@@ -3,7 +3,7 @@ var db;
 
 function createDb() {
     console.log("createDb reddrinkdb");
-    db = new sqlite3.Database('reddrinkdb.sqlite3', createTable);
+    db = new sqlite3.Database('../reddrinkdb.sqlite3', createTable);
 }
 
 
@@ -11,7 +11,7 @@ function createTable() {
     console.log("createTable lorem");
     db.run(`CREATE TABLE user(id INTEGER PRIMARY KEY, username TEXT NOT NULL, email TEXT NOT NULL, maxScore INTEGER, lastScore INTEGER)`);
     db.run(`CREATE TABLE sala(id INTEGER PRIMARY KEY, name TEXT NOT NULL)`);
-    db.run(`CREATE TABLE user_sala(id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL,sala_id INTEGER NOT NULL);`);
+    db.run(`CREATE TABLE user_sala(id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL,sala_id INTEGER NOT NULL);`, closeDb);
 }
 
 function closeDb() {
@@ -22,5 +22,4 @@ function closeDb() {
 function runChainExample() {
     createDb();
 }
-createDb();
 runChainExample();
