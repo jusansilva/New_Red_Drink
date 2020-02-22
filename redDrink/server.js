@@ -12,7 +12,6 @@ let maxConcurrentConnections = 5
 let maxSala
 
 
-
 webApp.get('/', (req, res) => {
     res.sendFile(__dirname + '/home.html')
 })
@@ -21,12 +20,16 @@ webApp.get('/sala', (req, res) => {
     res.sendFile(__dirname + '/addSala.html')
 })
 
-webApp.post('/sala', (req, res) => {
-    const sala = req.body.sala
-    const username = req.body.username
-    const email = req.body.email
-console.log(req.body)
-    // var verifyUser
+webApp.get('/gameSelect', (req, res) => {
+    res.sendFile(__dirname + '/gameSelect.html')
+})
+
+// webApp.post('/sala', (req, res) => {
+//     const sala = req.body.sala
+//     const username = req.body.username
+//     const email = req.body.email
+// console.log(req.body)
+//      var verifyUser
 
     // db.get(`select username, email from user where email=${email}`, [], (erro, data) => {
     //     if (!erro) {
@@ -37,11 +40,11 @@ console.log(req.body)
     // if (verifyUser > 0) {
     //     res.send("usuariao ja cadastrado");
     // } else {
-        db.run(`insert into user valuer(${email}, ${username}, 0, 0)`)
-        res.sendFile(__dirname + `/game.html`, {username:username})
+        // db.run(`insert into user valuer(${email}, ${username}, 0, 0)`)
+        // res.sendFile(__dirname + `/game.html`, {username:username})
     // }
 
-})
+// })
 
 webApp.get('/game', (req, res) => {
     res.sendFile(__dirname + '/game.html')

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/asset/css">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>New Red Drink</title>
+	<!--bootstrap 4-->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+</head>
+
+<body>
+	<div id='home'>
+		<div class="card">
+
+			<h4 class="card-header white-text text-center py-4" style="background-color: #fc0000;color:#fff">
+				<strong>New Red Drink</strong><br>
+			</h4>
+				<br>
+				<h5 class="text-center">
+					Entrar na Sala
+				</h5>
+				<!--Card content-->
+				<div class="card-body px-lg-5 pt-0" style="background-image: url('/asset/image/fundo.png');">
+
+					<!-- Form -->
+					<form class="text-center" action="/entraSala" method="post" style="color: #757575;" action="#!">
+
+						<!-- Name -->
+						<div class="md-form mt-3">
+							<input type="text" id="sala" name='sala' class="form-control">
+							<label for="sala">Nome da Sala</label>
+						</div>
+
+						
+						<!-- Send button -->
+						<button class="btn btn-outline-info btn-rounded btn-block z-depth-0 my-4 waves-effect" type="submit">Entrar na Sala</button>
+
+                        <!-- Send button -->
+						<a class="btn btn-outline-info btn-rounded btn-block z-depth-0 my-4 waves-effect" type="button" href="/sala">Criar Sala</a>
+					</form>
+					<!-- Form -->
+
+				</div>
+
+		</div>
+		<!-- Material form contact -->
+
+	</div>
+</body>
+
+</html>
