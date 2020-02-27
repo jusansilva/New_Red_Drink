@@ -4,7 +4,8 @@
   "description": "Nova versão do Game Red Drink",
   "main": "redDrink/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "sudo nodemon redDrink/server.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,10 @@
   },
   "homepage": "https://github.com/jusansilva/New_Red_Drink#readme",
   "dependencies": {
-    "mongodb": "^3.5.2",
+    "cookie-parser": "^1.4.4",
+    "mongodb": "^3.5.4",
+    "mongoose": "^5.9.2",
+    "morgan": "^1.9.1",
     "socket.io": "^2.3.0",
     "sqlite3": "^4.1.1",
     "xpress": "^2.4.6"
