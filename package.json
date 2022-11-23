@@ -22,7 +22,7 @@
     "mongodb": "^3.5.4",
     "mongoose": "^5.9.2",
     "morgan": "^1.9.1",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.5.0",
     "sqlite3": "^4.1.1",
     "xpress": "^2.4.6"
   }
